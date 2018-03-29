@@ -10,7 +10,8 @@ defmodule ElixirBench.Mixfile do
       compilers: [:phoenix, ] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -49,7 +50,8 @@ defmodule ElixirBench.Mixfile do
       {:antidote, github: "michalmuskala/antidote"},
       {:yamerl, "~> 0.6.0"},
       {:confex, "~> 3.3"},
-      {:basic_auth, "~> 2.2"}
+      {:basic_auth, "~> 2.2"},
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 
