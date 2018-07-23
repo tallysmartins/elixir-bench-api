@@ -15,8 +15,23 @@ use Mix.Config
 # which you typically run after static files are built.
 config :elixir_bench, ElixirBenchWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "elixirbench.org", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  http: [port: 80,
+         protocol_options: [
+           max_header_name_length: 64000,
+           max_header_value_length: 4096000,                                                     
+           max_headers: 10000
+         ]],
+  server: true, # Without this line, your app will not start the web server!
+  secret_key_base: "${SECRET_KEY_BASE}",
+  url: [host: "beta.elixirbench.org", port: 80]
+
+# Configure your database
+config :elixir_bench, ElixirBench.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: "${DATABASE_URL}",
+  database: "",
+  ssl: true,
+  pool_size: 1
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -46,11 +61,6 @@ config :logger, level: :info
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
-config :elixir_bench, ElixirBenchWeb.Endpoint, server: true
-
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
 
 # Set the Github client
 config :elixir_bench, :github_client, ElixirBench.Github.ClientHTTP
